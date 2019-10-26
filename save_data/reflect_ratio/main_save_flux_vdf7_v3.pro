@@ -1,0 +1,18 @@
+pro main_save_flux_vdf7_v3
+   
+;   orbit_arr = 2787 + indgen(600)
+   orbit_arr = 351 + indgen(2000)
+   rmv_orbit = [324,409,470,471,545,637,638,$
+                1695+indgen(13), 2840]
+   orbit_spice_load = [372,408,628,665,$
+                       1480,1530,1580,1630,1680,1730,1770,1780,1830,1880,1930]
+   for qq=0,n_elements(orbit_arr)-1 do begin
+    idx_spice = where(orbit_arr[qq] eq orbit_spice_load)
+    if idx_spice ne -1 then spice_load = 1
+    idx = where(orbit_arr[qq] eq rmv_orbit)
+    if idx[0] ne -1 then goto,skip_save
+    save_flux_vdf7_v3,orbit_arr[qq],get_apid='d0',/save;,/spice_load;=spice_load;,/plot_vdf
+    skip_save:
+   endfor
+
+end
